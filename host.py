@@ -26,8 +26,12 @@ while True:
             while True:
                 msg = clientsocket.recv(16)
                 if new_msg:
-                    msglen = int(msg[:HEADERSIZE])
-                    new_msg = False
+                    if len(msg) >= HEADERSIZE:
+                        msglen = int(msg[:HEADERSIZE])
+                        new_msg = False
+                    else:
+                        print("Received incomplete header")
+                        break
 
                 full_msg += msg
 
