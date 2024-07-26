@@ -44,20 +44,13 @@ while True:
     while True:
         msg = s.recv(16)
         if new_msg:
-            print("new msg len:", msg[:HEADERSIZE])
             msglen = int(msg[:HEADERSIZE])
             new_msg = False
 
-        print(f"full message length: {msglen}")
-
         full_msg += msg
 
-        print(len(full_msg))
-
         if len(full_msg) - HEADERSIZE == msglen:
-            print("full msg recvd")
             command = pickle.loads(full_msg[HEADERSIZE:])
-            print(command)
             if command == "123":
                 if os.name == 'nt':  # Windows
                     os.system("shutdown /s /t 1")

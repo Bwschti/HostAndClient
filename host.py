@@ -22,7 +22,7 @@ while True:
 
     if d == "223":
         img_count = 0
-        while True:
+        while img_count < 10:
             full_msg = b''
             new_msg = True
             while True:
@@ -44,5 +44,4 @@ while True:
                     img_count += 1
                     new_msg = True
                     full_msg = b""
-            if input("Stop receiving screenshots? (y/n): ") == 'y':
-                break
+        print("Received 10 screenshots. You can send another command.")
