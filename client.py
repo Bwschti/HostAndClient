@@ -73,7 +73,5 @@ while True:
                     img_msg = pickle.dumps(img_byte_arr)
                     img_msg = bytes(f"{len(img_msg):<{HEADERSIZE}}", 'utf-8') + img_msg
                     s.send(img_msg)
-                    if s.recv(16) == b'223':
-                        screenshot_active = False
             new_msg = True
             full_msg = b""
