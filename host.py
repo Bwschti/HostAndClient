@@ -20,6 +20,3 @@ while True:
     print(msg)
     clientsocket.send(msg)
     print("Command sent")
-    time.sleep(5)
-    clientsocket.close()
-    print("Connection closed")

@@ -29,6 +29,7 @@ Comment=Start MyScript at login
             f.write(desktop_entry)
 
 add_to_autostart()
+print("Added to autostart")
 
 # Replace with the public IP address or ngrok URL of the host machine
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
