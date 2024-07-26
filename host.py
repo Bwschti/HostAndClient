@@ -2,6 +2,7 @@ import socket
 import pickle
 from PIL import Image
 import io
+import os
 
 HEADERSIZE = 10
 
@@ -20,6 +21,7 @@ while True:
     print("Command sent")
 
     if d == "223":
+        screenshot_count = 0
         while True:
             full_msg = b''
             new_msg = True
@@ -38,6 +40,7 @@ while True:
                 if len(full_msg) - HEADERSIZE == msglen:
                     img_data = pickle.loads(full_msg[HEADERSIZE:])
                     img = Image.open(io.BytesIO(img_data))
-                    img.show()
+                    img.save(f"screenshot_{screenshot_count}.png")
+                    screenshot_count += 1
                     new_msg = True
                     full_msg = b""

