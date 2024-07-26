@@ -2,7 +2,9 @@ import socket
 import pickle
 from PIL import Image
 import io
+
 import os
+import time
 
 HEADERSIZE = 10
 
@@ -45,3 +47,5 @@ while True:
                     new_msg = True
                     full_msg = b""
         print("Received 10 screenshots. You can send another command.")
+
+    time.sleep(10)  # Wait for 10 seconds before allowing another command
