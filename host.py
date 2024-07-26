@@ -1,36 +1,25 @@
 import socket
+import time
 import pickle
-import os
+
 
 HEADERSIZE = 10
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('192.168.1.2', 1243))  # Replace with the IP address of the host machine
+s.bind((socket.gethostname(), 1243))
+s.listen(5)
 
 while True:
-    full_msg = b''
-    new_msg = True
-    while True:
-        msg = s.recv(16)
-        if new_msg:
-            print("new msg len:", msg[:HEADERSIZE])
-            msglen = int(msg[:HEADERSIZE])
-            new_msg = False
+    # now our endpoint knows about the OTHER endpoint.
+    clientsocket, address = s.accept()
+    print(f"Connection from {address} has been established.")
 
-        print(f"full message length: {msglen}")
-
-        full_msg += msg
-
-        print(len(full_msg))
-
-        if len(full_msg) - HEADERSIZE == msglen:
-            print("full msg recvd")
-            command = pickle.loads(full_msg[HEADERSIZE:])
-            print(command)
-            if command == "213":
-                if os.name == 'nt':  # Windows
-                    os.system("shutdown /s /t 1")
-                elif os.name == 'posix':  # Linux
-                    os.system("shutdown now")
-            new_msg = True
-            full_msg = b""
+    d = input("What command do you want to send : ")
+    msg = pickle.dumps(d)
+    msg = bytes(f"{len(msg):<{HEADERSIZE}}", 'utf-8')+msg
+    print(msg)
+    clientsocket.send(msg)
+    print("Command sent")
+    time.sleep(5)
+    clientsocket.close()
+    print("Connection closed")
