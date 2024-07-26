@@ -2,10 +2,7 @@ import socket
 import pickle
 from PIL import Image
 import io
-
 import os
-import imageio
-import numpy as np
 
 HEADERSIZE = 10
 
@@ -24,7 +21,7 @@ while True:
     print("Command sent")
 
     if d == "223":
-        writer = imageio.get_writer('output.mp4', fps=20)
+        img_count = 0
         while True:
             full_msg = b''
             new_msg = True
@@ -43,8 +40,7 @@ while True:
                 if len(full_msg) - HEADERSIZE == msglen:
                     img_data = pickle.loads(full_msg[HEADERSIZE:])
                     img = Image.open(io.BytesIO(img_data))
-                    frame = np.array(img)
-                    writer.append_data(frame)
+                    img.save(f'screenshot_{img_count}.png')
+                    img_count += 1
                     new_msg = True
                     full_msg = b""
-        writer.close()

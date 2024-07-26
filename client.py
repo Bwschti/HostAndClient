@@ -3,9 +3,6 @@ import pickle
 import os
 import shutil
 import pyautogui
-
-import imageio
-import numpy as np
 import io
 
 HEADERSIZE = 10
